@@ -1,9 +1,11 @@
-import "./page.scss";
+import PhaserGame from '@/components/PhaserGame';
 
-export default function Home() {
+export default function GamePage() {
   return (
-    <main className="home">
-      <p>Scenes</p>
+    <main>
+      <h1>My first Phaser scene</h1>
+      <p>Click or tap the rotating square to change its color.</p>
+      <PhaserGame />
     </main>
   );
 }
