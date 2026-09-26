@@ -1,5 +1,5 @@
 
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import { PlayScene } from './scenes/ImportedScene';
 
 export function createGame(parent: HTMLElement): Phaser.Game {

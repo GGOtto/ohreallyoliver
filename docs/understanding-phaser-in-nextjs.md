@@ -158,7 +158,7 @@ public/
 Create `src/game/scenes/PlayScene.ts`:
 
 ```ts
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 
 export class PlayScene extends Phaser.Scene {
   private square?: Phaser.GameObjects.Rectangle;
@@ -201,7 +201,7 @@ There is no physics system here because rotation and pointer interaction do not 
 Create `src/game/createGame.ts`:
 
 ```ts
-import Phaser from 'phaser';
+import * as Phaser from 'phaser';
 import { PlayScene } from './scenes/PlayScene';
 
 export function createGame(parent: HTMLElement): Phaser.Game {
