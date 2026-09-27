@@ -1,27 +1,37 @@
 {
-  "name": "ohreallyoliver",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.3.6",
-    "phaser": "3.90.0",
-    "react": "19.2.8",
-    "react-dom": "19.2.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.3.6",
-    "sass": "^1.105.0",
-    "typescript": "^5"
-  },
-  "packageManager": "pnpm@11.9.0"
+	"name": "ohreallyoliver",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"prepare": "husky"
+	},
+	"dependencies": {
+		"next": "16.3.6",
+		"phaser": "3.90.0",
+		"react": "19.2.8",
+		"react-dom": "19.2.8"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"eslint": "^9",
+		"eslint-config-next": "16.3.6",
+		"eslint-config-prettier": "10.1.8",
+		"husky": "9.1.7",
+		"lint-staged": "17.5.1",
+		"prettier": "3.9.9",
+		"sass": "^1.105.0",
+		"typescript": "^5"
+	},
+	"packageManager": "pnpm@11.9.0",
+	"lint-staged": {
+		"*": "prettier --write --ignore-unknown"
+	}
 }

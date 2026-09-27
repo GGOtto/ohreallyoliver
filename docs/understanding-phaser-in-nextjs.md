@@ -10,13 +10,13 @@ The goal is to understand an existing Phaser project and know where each part be
 
 Think of a page containing a playable game, a title, instructions, and a leaderboard:
 
-| Responsibility | Where it belongs |
-| --- | --- |
-| URL, page layout, initial server data | Next.js |
-| Instructions, settings forms, leaderboard display | React components |
-| Characters, movement, collisions, game camera | Phaser |
+| Responsibility                                        | Where it belongs      |
+| ----------------------------------------------------- | --------------------- |
+| URL, page layout, initial server data                 | Next.js               |
+| Instructions, settings forms, leaderboard display     | React components      |
+| Characters, movement, collisions, game camera         | Phaser                |
 | Keeping the game alive while its component is mounted | A small React wrapper |
-| Persistent saves and authoritative score validation | Your backend |
+| Persistent saves and authoritative score validation   | Your backend          |
 
 React renders an empty container. Phaser inserts a canvas into it and manages the things drawn there. A sprite is usually not an HTML element, and moving it does not require a React render.
 
@@ -50,12 +50,12 @@ The main lifecycle is:
 init(data) → preload() → create(data) → update(time, delta), repeatedly
 ```
 
-| Method | Your job |
-| --- | --- |
-| `init` | Reset per-run state and receive scene startup data |
-| `preload` | Queue assets that this scene needs |
-| `create` | Build objects and register interactions |
-| `update` | Apply behavior that must run each frame |
+| Method    | Your job                                           |
+| --------- | -------------------------------------------------- |
+| `init`    | Reset per-run state and receive scene startup data |
+| `preload` | Queue assets that this scene needs                 |
+| `create`  | Build objects and register interactions            |
+| `update`  | Apply behavior that must run each frame            |
 
 Phaser waits for assets queued in `preload` before calling `create`. A scene can omit lifecycle methods it does not need. Restarting a scene runs its startup lifecycle again, so reset run-specific fields in `init` or `create`; do not rely on its constructor running again. See [scene lifecycle](https://docs.phaser.io/phaser/concepts/scenes).
 
@@ -69,10 +69,10 @@ When you see `this.add.rectangle(...)`, `this` is the current scene and `add` is
 
 ```ts
 // Inside preload(): load a file under a key.
-this.load.image('player', '/game-assets/player.png');
+this.load.image("player", "/game-assets/player.png");
 
 // Inside create(): retrieve the texture by that key.
-this.add.image(400, 225, 'player');
+this.add.image(400, 225, "player");
 ```
 
 `player` is a lookup key. `/game-assets/player.png` is a URL. Following keys from their load calls to their uses is one of the fastest ways to understand unfamiliar game code. See [the loader](https://docs.phaser.io/phaser/concepts/loader).
@@ -158,35 +158,35 @@ public/
 Create `src/game/scenes/PlayScene.ts`:
 
 ```ts
-import * as Phaser from 'phaser';
+import * as Phaser from "phaser";
 
 export class PlayScene extends Phaser.Scene {
-  private square?: Phaser.GameObjects.Rectangle;
+	private square?: Phaser.GameObjects.Rectangle;
 
-  constructor() {
-    super('Play');
-  }
+	constructor() {
+		super("Play");
+	}
 
-  create() {
-    this.add.text(24, 24, 'Click or tap the square', {
-      fontSize: '24px',
-      color: '#ffffff',
-    });
+	create() {
+		this.add.text(24, 24, "Click or tap the square", {
+			fontSize: "24px",
+			color: "#ffffff",
+		});
 
-    const square = this.add.rectangle(400, 225, 96, 96, 0x60a5fa);
-    this.square = square;
-    square.setInteractive({ useHandCursor: true });
+		const square = this.add.rectangle(400, 225, 96, 96, 0x60a5fa);
+		this.square = square;
+		square.setInteractive({ useHandCursor: true });
 
-    square.on('pointerdown', () => {
-      square.setFillStyle(Phaser.Display.Color.RandomRGB().color);
-    });
-  }
+		square.on("pointerdown", () => {
+			square.setFillStyle(Phaser.Display.Color.RandomRGB().color);
+		});
+	}
 
-  update(_time: number, delta: number) {
-    if (this.square) {
-      this.square.rotation += (Math.PI / 2) * (delta / 1000);
-    }
-  }
+	update(_time: number, delta: number) {
+		if (this.square) {
+			this.square.rotation += (Math.PI / 2) * (delta / 1000);
+		}
+	}
 }
 ```
 
@@ -201,22 +201,22 @@ There is no physics system here because rotation and pointer interaction do not 
 Create `src/game/createGame.ts`:
 
 ```ts
-import * as Phaser from 'phaser';
-import { PlayScene } from './scenes/PlayScene';
+import * as Phaser from "phaser";
+import { PlayScene } from "./scenes/PlayScene";
 
 export function createGame(parent: HTMLElement): Phaser.Game {
-  return new Phaser.Game({
-    type: Phaser.AUTO,
-    parent,
-    width: 800,
-    height: 450,
-    backgroundColor: '#111827',
-    scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
-    scene: [PlayScene],
-  });
+	return new Phaser.Game({
+		type: Phaser.AUTO,
+		parent,
+		width: 800,
+		height: 450,
+		backgroundColor: "#111827",
+		scale: {
+			mode: Phaser.Scale.FIT,
+			autoCenter: Phaser.Scale.CENTER_BOTH,
+		},
+		scene: [PlayScene],
+	});
 }
 ```
 
@@ -229,73 +229,75 @@ The 800 × 450 dimensions define the logical game area. `FIT` scales its display
 Create `src/components/PhaserGame.tsx`:
 
 ```tsx
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
-import type { Game } from 'phaser';
+import { useEffect, useRef, useState } from "react";
+import type { Game } from "phaser";
 
 export default function PhaserGame() {
-  const hostRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState<string | null>(null);
+	const hostRef = useRef<HTMLDivElement>(null);
+	const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const host = hostRef.current;
-    if (!host) return;
+	useEffect(() => {
+		const host = hostRef.current;
+		if (!host) return;
 
-    let disposed = false;
-    let game: Game | undefined;
+		let disposed = false;
+		let game: Game | undefined;
 
-    async function start() {
-      try {
-        const { createGame } = await import('@/game/createGame');
-        if (disposed) return;
-        game = createGame(host!);
-      } catch (cause) {
-        if (!disposed) {
-          console.error('Game startup failed', cause);
-          setError('The game could not start. Please reload the page.');
-        }
-      }
-    }
+		async function start() {
+			try {
+				const { createGame } = await import("@/game/createGame");
+				if (disposed) return;
+				game = createGame(host!);
+			} catch (cause) {
+				if (!disposed) {
+					console.error("Game startup failed", cause);
+					setError(
+						"The game could not start. Please reload the page.",
+					);
+				}
+			}
+		}
 
-    void start();
+		void start();
 
-    return () => {
-      disposed = true;
-      game?.destroy(true);
-    };
-  }, []);
+		return () => {
+			disposed = true;
+			game?.destroy(true);
+		};
+	}, []);
 
-  return (
-    <section aria-label="Interactive game demo">
-      {error && <p role="alert">{error}</p>}
-      <div
-        ref={hostRef}
-        style={{
-          width: '100%',
-          maxWidth: 800,
-          aspectRatio: '16 / 9',
-          marginInline: 'auto',
-          overflow: 'hidden',
-        }}
-      />
-    </section>
-  );
+	return (
+		<section aria-label="Interactive game demo">
+			{error && <p role="alert">{error}</p>}
+			<div
+				ref={hostRef}
+				style={{
+					width: "100%",
+					maxWidth: 800,
+					aspectRatio: "16 / 9",
+					marginInline: "auto",
+					overflow: "hidden",
+				}}
+			/>
+		</section>
+	);
 }
 ```
 
 Each part solves a specific problem:
 
-| Part | Purpose |
-| --- | --- |
-| `'use client'` | Allows hooks in this component |
-| `import type` | Uses Phaser's TypeScript type without a runtime import |
-| `hostRef` | Gives Phaser a real DOM element after mounting |
-| Dynamic `import()` in the effect | Keeps Phaser module evaluation in the browser |
-| `disposed` flag | Prevents a late import from creating a game after unmount |
-| Local `game` variable | Associates cleanup with this exact effect instance |
-| `destroy(true)` | Requests engine destruction and removal of its canvas |
-| Explicit aspect ratio | Reserves visible space before the game starts |
+| Part                             | Purpose                                                   |
+| -------------------------------- | --------------------------------------------------------- |
+| `'use client'`                   | Allows hooks in this component                            |
+| `import type`                    | Uses Phaser's TypeScript type without a runtime import    |
+| `hostRef`                        | Gives Phaser a real DOM element after mounting            |
+| Dynamic `import()` in the effect | Keeps Phaser module evaluation in the browser             |
+| `disposed` flag                  | Prevents a late import from creating a game after unmount |
+| Local `game` variable            | Associates cleanup with this exact effect instance        |
+| `destroy(true)`                  | Requests engine destruction and removal of its canvas     |
+| Explicit aspect ratio            | Reserves visible space before the game starts             |
 
 React development Strict Mode can run an extra effect setup/cleanup cycle. The cancellation check and cleanup are needed for that lifecycle and for ordinary navigation. See [React's effect reference](https://react.dev/reference/react/useEffect).
 
@@ -308,16 +310,16 @@ The error message catches module-loading and synchronous construction failures. 
 Create `src/app/game/page.tsx`:
 
 ```tsx
-import PhaserGame from '@/components/PhaserGame';
+import PhaserGame from "@/components/PhaserGame";
 
 export default function GamePage() {
-  return (
-    <main>
-      <h1>My first Phaser scene</h1>
-      <p>Click or tap the rotating square to change its color.</p>
-      <PhaserGame />
-    </main>
-  );
+	return (
+		<main>
+			<h1>My first Phaser scene</h1>
+			<p>Click or tap the rotating square to change its color.</p>
+			<PhaserGame />
+		</main>
+	);
 }
 ```
 
@@ -367,18 +369,18 @@ Keep database credentials on the server. If scores or rewards have real conseque
 
 ## 7. Common symptoms and where to look
 
-| Symptom | First thing to inspect |
-| --- | --- |
-| `window` or `document` is undefined | A runtime Phaser import is reaching server evaluation |
-| More than one canvas, repeated audio, duplicate callbacks | Repeated construction or missing cleanup |
-| Blank space with no visible game | Container dimensions, scene startup, browser console |
-| Missing texture | Asset request status, URL, spelling, and texture key |
-| Clicking does nothing | Whether the object has `setInteractive()` and an input handler |
-| Movement changes with frame rate | Fixed per-frame changes rather than elapsed-time-based motion |
-| Game restarts when surrounding UI changes | Changing effect dependencies or a changing React `key` |
-| Score doubles after restarting | External listeners accumulating across scene runs |
-| Game looks stretched | CSS sizing fighting Phaser's scale mode |
-| Controls interfere with page forms | Keyboard capture/focus policy needs to account for surrounding UI |
+| Symptom                                                   | First thing to inspect                                            |
+| --------------------------------------------------------- | ----------------------------------------------------------------- |
+| `window` or `document` is undefined                       | A runtime Phaser import is reaching server evaluation             |
+| More than one canvas, repeated audio, duplicate callbacks | Repeated construction or missing cleanup                          |
+| Blank space with no visible game                          | Container dimensions, scene startup, browser console              |
+| Missing texture                                           | Asset request status, URL, spelling, and texture key              |
+| Clicking does nothing                                     | Whether the object has `setInteractive()` and an input handler    |
+| Movement changes with frame rate                          | Fixed per-frame changes rather than elapsed-time-based motion     |
+| Game restarts when surrounding UI changes                 | Changing effect dependencies or a changing React `key`            |
+| Score doubles after restarting                            | External listeners accumulating across scene runs                 |
+| Game looks stretched                                      | CSS sizing fighting Phaser's scale mode                           |
+| Controls interfere with page forms                        | Keyboard capture/focus policy needs to account for surrounding UI |
 
 For responsive layouts, begin with the fixed logical size and `FIT` example. `RESIZE` changes the game dimensions with the parent and requires scene layout logic. If the parent changes size independently of the window, inspect whether you need a `ResizeObserver` and a scale refresh.
 

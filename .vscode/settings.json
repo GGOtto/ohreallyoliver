@@ -1,0 +1,12 @@
+{
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.tabSize": 4,
+	"[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][scss][html][markdown][yaml]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[yaml]": {
+		"editor.insertSpaces": true
+	}
+}

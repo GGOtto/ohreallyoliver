@@ -1,0 +1,10 @@
+# Generated output and dependencies
+node_modules/
+.next/
+out/
+build/
+coverage/
+.pnpm-store/
+.husky/_/
+next-env.d.ts
+pnpm-lock.yaml
