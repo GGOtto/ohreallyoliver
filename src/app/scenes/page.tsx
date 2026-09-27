@@ -2,10 +2,7 @@ import PhaserGame from "@/components/PhaserGame";
 
 export default function GamePage() {
 	return (
-		<main>
-			<h1>
-				Testing out different scenes using badly drawn terrain assets.
-			</h1>
+		<main className="game-page" aria-label="Terrain scenes">
 			<PhaserGame gameFolder="basic-scenes" />
 		</main>
 	);

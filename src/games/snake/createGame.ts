@@ -6,11 +6,11 @@ export function createGame(parent: HTMLElement): Phaser.Game {
 		type: Phaser.AUTO,
 		parent,
 		width: 800,
-		height: 450,
+		height: 800,
 		backgroundColor: "#111827",
 		scale: {
 			mode: Phaser.Scale.FIT,
-			autoCenter: Phaser.Scale.CENTER_BOTH,
+			autoCenter: Phaser.Scale.NO_CENTER,
 		},
 		scene: [PlayScene],
 	});

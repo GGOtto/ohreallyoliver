@@ -1,0 +1,12 @@
+.game-box {
+	width: min(100%, 800px, 100svh);
+	aspect-ratio: 1;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: #000;
+
+	canvas {
+		display: block;
+	}
+}

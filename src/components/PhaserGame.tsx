@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Game } from "phaser";
+import "./PhaseGame.scss";
 
 type PhaserGameProps = {
 	gameFolder: string;
@@ -45,18 +46,9 @@ export default function PhaserGame(props: PhaserGameProps) {
 	}, []);
 
 	return (
-		<section aria-label="Interactive game demo">
+		<section aria-label="game box">
 			{error && <p role="alert">{error}</p>}
-			<div
-				ref={hostRef}
-				style={{
-					width: "100%",
-					maxWidth: 800,
-					aspectRatio: "16 / 9",
-					marginInline: "auto",
-					overflow: "hidden",
-				}}
-			/>
+			<div className="game-box" ref={hostRef} />
 		</section>
 	);
 }
